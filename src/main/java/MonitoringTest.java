@@ -19,11 +19,10 @@ public class MonitoringTest {
             Thread.sleep(50);
             list.add(new OOMObject());
         }
-        System.gc();
-
     }
 
     public static void main(String[] args) throws Exception{
         fillHeap(1000);
+        System.gc();
     }
 }
