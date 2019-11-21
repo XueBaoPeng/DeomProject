@@ -1,0 +1,5 @@
+import  compile.EacProxy ;
+
+public static EacProxy createProxy() {
+#replaced#
+}
