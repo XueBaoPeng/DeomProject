@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 public class ReflectService {
 
 
+    public ReflectService() {
+    }
+
     public void sayHello(String name){
         System.out.println("hello"+name);
     }
