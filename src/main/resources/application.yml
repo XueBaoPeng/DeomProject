@@ -1,0 +1,9 @@
+server:
+  port: 8088
+
+#springBoot swagger配置
+knife4j:
+  basic:
+    username: admin
+    password: admin
+    enable: true
