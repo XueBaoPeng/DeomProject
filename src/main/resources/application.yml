@@ -1,6 +1,19 @@
 server:
   port: 8088
 
+#配置文件中添加 H2 数据库的相关配置
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    schema: classpath:db/schema-h2.sql
+    data: classpath:db/data-h2.sql
+    url: jdbc:h2:file:D:/data/db
+    username: root
+    password: root
+  h2:
+    console:
+      enabled: true #开启web console功能
+
 #springBoot swagger配置
 knife4j:
   basic:
