@@ -2,7 +2,7 @@ package com.demo.project.ruleBase;
 
 import com.demo.project.entity.CompileResult;
 import com.demo.project.entity.JavaRuleDo;
-import com.demo.project.entity.Results;
+import com.demo.project.entity.Result;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.tools.*;
@@ -26,17 +26,17 @@ public class DynamicRuleUtils {
     private static final String TARGET_CLASS_VERSION = "1.8";
     private JavaRuleStorage javaRuleStorage=new MapJavaRuleStorage();
 
-    public static  Results<CompileResult> compile(String javaSrc) throws RuntimeException{
+    public static Result<CompileResult> compile(String javaSrc) throws RuntimeException{
         Pattern pattern = Pattern.compile("public\\s+class\\s+(\\w+)");
         Matcher matcher = pattern.matcher(javaSrc);
         if (matcher.find()) {
             return compile(matcher.group(1) + ".java", javaSrc);
         }
-        return Results.error("找不到类名称！");
+        return Result.error("找不到类名称！");
     }
 
 
-    public static Results<CompileResult> compile(String javaName,String javaSrc) throws RuntimeException {
+    public static Result<CompileResult> compile(String javaName, String javaSrc) throws RuntimeException {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager stdManager = compiler.getStandardFileManager(null, null, null);
         try(MemoryJavaFileManager manager = new MemoryJavaFileManager(stdManager)) {
@@ -48,7 +48,7 @@ public class DynamicRuleUtils {
             JavaCompiler.CompilationTask task = compiler.getTask(null, manager, collector, options, null,
                     Arrays.asList(javaFileObject));
             if (task.call()) {
-                return Results.success(CompileResult.builder()
+                return Result.success(CompileResult.builder()
                         .mainClassFileName(javaName)
                         .byteCode(manager.getClassBytes())
                         .build());
@@ -56,10 +56,10 @@ public class DynamicRuleUtils {
             String errorMessage = collector.getDiagnostics().stream()
                     .map(diagnostics -> diagnostics.toString())
                     .reduce("", (s1, s2) -> s1 + "\n" +s2);
-            return Results.error(errorMessage);
+            return Result.error(errorMessage);
         }catch (IOException e){
             log.error("编译出错啦！", e);
-            return Results.error(e.getMessage());
+            return Result.error(e.getMessage());
         }
     }
 
@@ -214,10 +214,10 @@ public class DynamicRuleUtils {
      * @param entity
      * @return
      */
-    private Results<JavaRuleDo> compiler(JavaRuleDo entity) {
-        Results<?> result = DynamicRuleUtils.compile(entity.getSrcCode());
+    public static Result<JavaRuleDo> compiler(JavaRuleDo entity) {
+        Result<?> result = DynamicRuleUtils.compile(entity.getSrcCode());
         if (result.isError()) {
-            return (Results<JavaRuleDo>) result;
+            return (Result<JavaRuleDo>) result;
         }
         CompileResult compileResult = (CompileResult) result.getData();
         for (String classFullName : compileResult.getByteCode().keySet()) {
@@ -230,10 +230,10 @@ public class DynamicRuleUtils {
                 entity.setFullClassName(classFullName);
                 entity.setSimpleClassName(simpleName);
                 entity.setByteContent(compileResult.getByteCode().get(classFullName));
-                return Results.success(entity);
+                return Result.success(entity);
             }
         }
-        return Results.error("没有找到最外层类！");
+        return Result.error("没有找到最外层类！");
     }
 
     /**
@@ -241,14 +241,14 @@ public class DynamicRuleUtils {
      * @param entity
      * @return
      */
-    private Results<JavaRuleDo> addRuleToStorage(JavaRuleDo entity) {
+    private Result<JavaRuleDo> addRuleToStorage(JavaRuleDo entity) {
         try {
             BaseRule rule = DynamicRuleUtils.getRuleInstance(entity);
-            return javaRuleStorage.add(entity.getGroupName(), rule) ? Results.success(entity)
-                    : Results.error("添加规则到容器失败！");
+            return javaRuleStorage.add(entity.getGroupName(), rule) ? Result.success(entity)
+                    : Result.error("添加规则到容器失败！");
         } catch (Exception e) {
             log.error("添加规则{}到容器异常！", entity.getName(), e);
-            return Results.error("添加规则到容器异常！");
+            return Result.error("添加规则到容器异常！");
         }
     }
     /**
@@ -256,16 +256,16 @@ public class DynamicRuleUtils {
      * @param entity
      * @return
      */
-    private Results removeRuleToStorage(JavaRuleDo entity) {
+    private Result removeRuleToStorage(JavaRuleDo entity) {
         String groupName = entity.getGroupName();
         try {
             BaseRule rule = DynamicRuleUtils.getRuleInstance(entity);
             if (javaRuleStorage.contains(groupName, rule) && !javaRuleStorage.remove(groupName, rule)) {
-                return Results.error("从容器移除规则失败！");
+                return Result.error("从容器移除规则失败！");
             }
         } catch (Exception e) {
             log.error("从容器移除规则{}异常！", entity.getName(), e);
-            return Results.error("从容器移除规则异常！");
+            return Result.error("从容器移除规则异常！");
         }
         return null;
     }

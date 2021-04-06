@@ -1,18 +1,36 @@
 server:
   port: 8088
 
-#配置文件中添加 H2 数据库的相关配置
+##配置文件中添加 H2 数据库的相关配置
+#spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    schema: classpath:db/schema-h2.sql
+#    data: classpath:db/data-h2.sql
+#    url: jdbc:h2:file:D:/data/db
+#    username: root
+#    password: root
+#  h2:
+#    console:
+#      enabled: true #开启web console功能
+#      path=/h2: #控制台地址localhost:8088/h2
+
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    schema: classpath:db/schema-h2.sql
-    data: classpath:db/data-h2.sql
-    url: jdbc:h2:file:D:/data/db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mysql?characterEncoding=utf8&&zeroDateTimeBehavior=convertToNull&&allowMultiQueries=true&serverTimezone=UTC
     username: root
     password: root
-  h2:
-    console:
-      enabled: true #开启web console功能
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+      serialization:
+        write-dates-as-timestamps: false
+
+mybatis-plus:
+  mapper-locations: classpath:mybatis/app/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #springBoot swagger配置
 knife4j:

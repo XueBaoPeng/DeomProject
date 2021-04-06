@@ -45,4 +45,9 @@ public class MapJavaRuleStorage implements JavaRuleStorage{
     public Collection<BaseRule> listObjByGroup(String group) {
         return map.get(group);
     }
+
+    @Override
+    public Collection<BaseRule> listAllObj() {
+        return map.values();
+    }
 }

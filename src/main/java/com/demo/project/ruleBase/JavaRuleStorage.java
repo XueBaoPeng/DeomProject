@@ -47,4 +47,9 @@ public interface JavaRuleStorage {
      */
     Collection<BaseRule> listObjByGroup(String group);
 
+    /**
+     * 从容器获取所有规则
+     * @return
+     */
+    Collection<BaseRule> listAllObj();
 }

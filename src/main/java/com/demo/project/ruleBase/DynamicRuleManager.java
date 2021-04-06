@@ -53,6 +53,15 @@ public class DynamicRuleManager {
         }
 
         /**
+         * 加载所有的策略
+         * @return
+         */
+        public Builder registerAllRules(){
+            Collection<BaseRule> rs = javaRuleStorage.listAllObj();
+            rs.stream().forEach(rules::register);
+            return this;
+         }
+        /**
          * 运行规则引擎
          */
         public Builder run() {
