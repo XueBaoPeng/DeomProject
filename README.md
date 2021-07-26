@@ -24,3 +24,7 @@ workBench+kie-server
 参考https://www.cnblogs.com/zhyg/p/10711055.html
 
 workBench可以使用tomcat直接启动，也可用docker镜像，推荐使用docker，更加方便，具体操作请百度，很简单。
+
+
+### DSL的实现方式 GROOVY
+https://blog.csdn.net/tianhaolin1991/article/details/106977846

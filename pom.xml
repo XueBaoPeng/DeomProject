@@ -216,6 +216,13 @@
         </dependency>
         <!--drools规则引擎 end-->
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.15</version>
+        </dependency>
+
     </dependencies>
 
     <build>
