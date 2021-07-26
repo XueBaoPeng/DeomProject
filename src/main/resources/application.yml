@@ -38,3 +38,6 @@ knife4j:
     username: admin
     password: admin
     enable: true
+
+xlsPath:
+    classpath:insuranceInfoCheck.xls
