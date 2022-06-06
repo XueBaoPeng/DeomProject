@@ -32,7 +32,7 @@ public class JaninoCompiler {
             ce.cook(source);
             Object obj = ce.getClazz().getMethod("createProxy").invoke(null);
             EacProxy ep = (EacProxy) obj;
-            System.out.println("JaninoCompiler.main"+ep.query());
+            System.out.println("JaninoCompiler.Main"+ep.query());
         }catch (Exception e){
             throw e;
         }
