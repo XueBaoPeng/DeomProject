@@ -21,7 +21,7 @@
         <easy-rule-version>4.1.0</easy-rule-version>
         <mybatis-plus-version>3.4.2</mybatis-plus-version>
         <mysql-version>8.0.20</mysql-version>
-        <drools.version>7.6.0.Final</drools.version>
+        <drools.version>7.60.0.Final</drools.version>
     </properties>
 
     <dependencies>
