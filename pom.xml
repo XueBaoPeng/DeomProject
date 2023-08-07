@@ -94,7 +94,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty</artifactId>
-            <version>3.5.6.Final</version>
+            <version>3.9.8.Final</version>
         </dependency>
 
         <!--高性能消息队列-->
